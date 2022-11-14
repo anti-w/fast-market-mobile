@@ -10,8 +10,8 @@ export function Home() {
     navigation.navigate("newmarket");
   }
 
-  function handleOpenUserProducts() {
-    navigation.navigate("userproducts");
+  function handleOpenProductsList() {
+    navigation.navigate("productslist");
   }
 
   return (
@@ -19,7 +19,7 @@ export function Home() {
       <TouchableOpacity onPress={() => handleOpenNewMarket()}>
         <Text>Cadastrar mercado</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => handleOpenUserProducts()}>
+      <TouchableOpacity onPress={() => handleOpenProductsList()}>
         <Text>Criar lista de compras</Text>
       </TouchableOpacity>
     </View>
