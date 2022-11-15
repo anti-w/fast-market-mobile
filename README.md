@@ -10,9 +10,8 @@ Fast Market é um sistema para supermercados que buscam inovar seus serviços of
 - [@anti-w](https://github.com/anti-w)
 
 ## Documentação
-
+![trello](https://logosmarcas.net/wp-content/uploads/2021/03/Trello-Logo-2021-presente.jpg)
 [trello](https://trello.com/b/5U8ujaI3/fast-market)
-
 
 ## Funcionalidades
 
