@@ -2,7 +2,9 @@ import { Avatar, Button, Dialog, ListItem } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Text, TextInput, View } from "react-native";
+
 import { getMarkets } from "../../api/getMarkets";
+import { createMarket as saveMarket } from "../../api/createMarket";
 
 export function NewMarket({ navigation }) {
   const [selectMarketDialog, setSelectMarketDialog] = useState(false);
@@ -14,7 +16,6 @@ export function NewMarket({ navigation }) {
       name: selectedMarket.name,
       id: selectedMarket.id,
     });
-    toggleSelectDialog();
   };
 
   const {
@@ -30,13 +31,13 @@ export function NewMarket({ navigation }) {
   useEffect(() => {
     (async () => {
       const { data } = await getMarkets();
-      console.log(data);
       setMarket(data);
     })();
   }, []);
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (marketData) => {
+    const { data } = await saveMarket(marketData.name);
+    handleNavigateMarket(data);
   };
 
   const toggleSelectDialog = () => {
@@ -47,6 +48,15 @@ export function NewMarket({ navigation }) {
   };
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Button
+        title={"Cadastrar mercado"}
+        onPress={toggleCreateDialog}
+        buttonStyle={{
+          borderRadius: 6,
+          width: 220,
+          margin: 20,
+        }}
+      />
       <Dialog isVisible={createMarket} onBackdropPress={toggleCreateDialog}>
         <Controller
           control={control}
@@ -83,15 +93,6 @@ export function NewMarket({ navigation }) {
           margin: 20,
         }}
       />
-      <Button
-        title={"Cadastrar mercado"}
-        onPress={toggleCreateDialog}
-        buttonStyle={{
-          borderRadius: 6,
-          width: 220,
-          margin: 20,
-        }}
-      />
       <Dialog
         isVisible={selectMarketDialog}
         onBackdropPress={toggleSelectDialog}
@@ -104,7 +105,10 @@ export function NewMarket({ navigation }) {
               marginHorizontal: -10,
               borderRadius: 8,
             }}
-            onPress={() => handleNavigateMarket(market)}
+            onPress={() => {
+              handleNavigateMarket(market);
+              toggleSelectDialog();
+            }}
           >
             <Avatar
               rounded

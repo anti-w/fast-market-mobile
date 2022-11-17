@@ -1,23 +1,68 @@
+import { Avatar, Button, ListItem } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
+import { LinearGradient } from "react-native-svg";
 import { getCategories } from "../../api/getCategories";
+import { CategoriesList } from "../../components/CategoriesList";
+import { CategoryForm } from "../../components/CategoryForm";
+import { ProductForm } from "../../components/ProductForm";
+import { ProductsList } from "../../components/ProductsList";
 
 export function MarketProducts({ route }) {
   const { name, id } = route.params;
-  const [categories, setCategories] = useState([]);
 
-  useEffect(() => {
-    (async () => {
-      const { data } = await getCategories(id);
-      console.log(data);
-      setCategories(data);
-    })();
-  }, []);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [categories, setCategories] = useState([null]);
+  const [toggleCategoryForm, setToggleCategoryForm] = useState(false);
+  const [toggleProductForm, setToggleProductForm] = useState(false);
+
+  const selectCategory = (id) => {
+    setSelectedCategory(id);
+  };
+
+  const handleToggleCategoryForm = () => {
+    setToggleCategoryForm(!toggleCategoryForm);
+  };
+
+  const handleToggleProductForm = () => {
+    setToggleProductForm(!toggleProductForm);
+  };
+
   return (
-    <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+    <View
+      style={{
+        flex: 1,
+        marginTop: 40,
+      }}
+    >
       <Text>{name}</Text>
-      <Text>Categorias</Text>
-      <Text>Produtos por categorias</Text>
+      <CategoriesList
+        id={id}
+        selectCategory={selectCategory}
+        setCategories={setCategories}
+      />
+      <ProductsList categoryId={selectedCategory} />
+
+      <Button
+        onPress={() => handleToggleCategoryForm()}
+        title="Cadastrar categoria"
+      />
+      <CategoryForm
+        handleToggleCategoryForm={handleToggleCategoryForm}
+        toggleCategoryForm={toggleCategoryForm}
+        categories={categories}
+        id={id}
+      />
+      <Button
+        onPress={() => handleToggleProductForm()}
+        title="Cadastrar Produto"
+      />
+      <ProductForm
+        handleToggleProductForm={handleToggleProductForm}
+        toggleProductForm={toggleProductForm}
+        categories={categories}
+        id={id}
+      />
     </View>
   );
 }

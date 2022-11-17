@@ -1,7 +1,6 @@
 import { Text, TouchableOpacity, View, FlatList, Image } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Category } from "../../components/Category";
 import { Product } from "../../components/Product";
 import { addProduct } from "../../store/reducers/userProducts";
 import { CATEGORIES, PRODUCTS } from "../../utils/mockData";
@@ -40,18 +39,6 @@ export function ProductsList({ navigation }) {
       </TouchableOpacity>
 
       <Text>Categorias</Text>
-      <FlatList
-        data={CATEGORIES}
-        horizontal
-        renderItem={({ item }) => (
-          <Category
-            id={item.id}
-            name={item.name}
-            key={item.id}
-            icon={item.icon}
-          />
-        )}
-      />
       <Text>Produtos:</Text>
       <FlatList
         data={PRODUCTS}
