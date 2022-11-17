@@ -1,14 +1,14 @@
 import { client } from "./client";
 
-export const createCategory = async (marketId, data) => {
+export const createCategory = async (marketId, name, order, icon) => {
   try {
-    const newCategory = await client.post(`/category/${marketId}/create`, {
-      name: data.name,
-      order: data.order,
-      icon: data.icon,
+    const { data } = await client.post(`/category/${marketId}/create`, {
+      name,
+      order,
+      icon,
     });
 
-    return newCategory;
+    return data;
   } catch (error) {
     console.log(error);
   }

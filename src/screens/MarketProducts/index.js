@@ -1,8 +1,7 @@
 import { Avatar, Button, ListItem } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
-import { LinearGradient } from "react-native-svg";
-import { getCategories } from "../../api/getCategories";
+
 import { CategoriesList } from "../../components/CategoriesList";
 import { CategoryForm } from "../../components/CategoryForm";
 import { ProductForm } from "../../components/ProductForm";
@@ -12,7 +11,7 @@ export function MarketProducts({ route }) {
   const { name, id } = route.params;
 
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [categories, setCategories] = useState([null]);
+  const [categories, setCategories] = useState([{}]);
   const [toggleCategoryForm, setToggleCategoryForm] = useState(false);
   const [toggleProductForm, setToggleProductForm] = useState(false);
 

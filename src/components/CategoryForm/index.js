@@ -1,7 +1,8 @@
-import { Button, Dialog } from "@rneui/themed";
-import { useState } from "react";
+import { Button, ButtonGroup, Dialog } from "@rneui/themed";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Text, TextInput } from "react-native";
+import { createCategory } from "../../api/createCategory";
 
 export function CategoryForm({
   id,
@@ -16,13 +17,23 @@ export function CategoryForm({
   } = useForm({
     defaultValues: {
       name: "",
-      order: 0,
-      icon: "",
+      icon: "https://cdn-icons-png.flaticon.com/512/3514/3514499.png",
     },
   });
 
-  const onSubmit = async (marketData) => {
-    console.log(marketData);
+  const arrayOfOrders = categories.map(
+    (category) => category.order && category.order
+  );
+
+  const onSubmit = async (data) => {
+    const newCategory = await createCategory(
+      id,
+      data.name,
+      data.order,
+      data.icon
+    );
+
+    console.log(newCategory);
   };
 
   return (
@@ -58,6 +69,7 @@ export function CategoryForm({
         control={control}
         rules={{
           required: true,
+          validate: (number) => !arrayOfOrders.includes(parseInt(number)),
         }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
@@ -68,14 +80,16 @@ export function CategoryForm({
               padding: 10,
               borderRadius: 4,
             }}
+            keyboardType="numeric"
             onBlur={onBlur}
             onChangeText={onChange}
-            value={value}
+            value={parseInt(value)}
           />
         )}
         name="order"
       />
       {errors.order && <Text>Campo obrigatório.</Text>}
+
       <Text>Url avatar:</Text>
       <Controller
         control={control}
