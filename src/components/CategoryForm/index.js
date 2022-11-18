@@ -26,12 +26,7 @@ export function CategoryForm({
   );
 
   const onSubmit = async (data) => {
-    const newCategory = await createCategory(
-      id,
-      data.name,
-      data.order,
-      data.icon
-    );
+    const newCategory = await createCategory(id, data);
 
     console.log(newCategory);
   };
@@ -83,7 +78,7 @@ export function CategoryForm({
             keyboardType="numeric"
             onBlur={onBlur}
             onChangeText={onChange}
-            value={parseInt(value)}
+            value={value}
           />
         )}
         name="order"
