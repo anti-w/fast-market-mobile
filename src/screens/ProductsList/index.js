@@ -1,5 +1,8 @@
+import { Avatar, Button, Dialog, ListItem } from "@rneui/themed";
+import { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View, FlatList, Image } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { getMarkets } from "../../api/getMarkets";
 
 import { Product } from "../../components/Product";
 import { addProduct } from "../../store/reducers/userProducts";
@@ -8,6 +11,10 @@ import { CATEGORIES, PRODUCTS } from "../../utils/mockData";
 export function ProductsList({ navigation }) {
   const userProductsList = useSelector((state) => state.userProducts);
   const dispatch = useDispatch();
+
+  const [market, setMarket] = useState([]);
+  const [marketId, setMarketId] = useState("");
+  const [selectMarketDialog, setSelectMarketDialog] = useState(false);
 
   const handleClickAddProduct = (
     name,
@@ -23,37 +30,67 @@ export function ProductsList({ navigation }) {
     );
   };
 
-  return (
-    <View style={{ flex: 1, marginTop: 40 }}>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate("userproducts");
-        }}
-      >
-        <Image
-          style={{ width: 80, height: 80 }}
-          source={{
-            uri: "https://cdn-icons-png.flaticon.com/512/1440/1440998.png",
-          }}
-        />
-      </TouchableOpacity>
+  const toggleSelectDialog = () => {
+    setSelectMarketDialog(!selectMarketDialog);
+  };
 
-      <Text>Categorias</Text>
-      <Text>Produtos:</Text>
-      <FlatList
-        data={PRODUCTS}
-        renderItem={({ item }) => (
-          <Product
-            categoryOrder={item.categoryOrder}
-            categoryName={item.categoryName}
-            categoryIcon={item.categoryIcon}
-            description={item.description}
-            name={item.name}
-            id={item.id}
-            handleClickAddProduct={handleClickAddProduct}
+  useEffect(() => {
+    (async () => {
+      const { data } = await getMarkets();
+      setMarket(data);
+    })();
+  }, []);
+
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      {marketId ? (
+        <>
+          <Text>Com algo</Text>
+        </>
+      ) : (
+        <>
+          <Button
+            title={"Selecionar Mercado"}
+            onPress={toggleSelectDialog}
+            buttonStyle={{
+              borderRadius: 6,
+              width: 220,
+              margin: 20,
+            }}
           />
-        )}
-      />
+          <Dialog
+            isVisible={selectMarketDialog}
+            onBackdropPress={toggleSelectDialog}
+          >
+            <Dialog.Title title="Escolha um mercado" />
+            {market.map((market, idx) => (
+              <ListItem
+                key={market.id}
+                containerStyle={{
+                  marginHorizontal: -10,
+                  borderRadius: 8,
+                }}
+                onPress={() => {
+                  setMarketId(market.id);
+                  toggleSelectDialog();
+                }}
+              >
+                <Avatar
+                  rounded
+                  source={{
+                    uri: "https://cdn-icons-png.flaticon.com/512/862/862819.png",
+                  }}
+                />
+                <ListItem.Content>
+                  <ListItem.Title style={{ fontWeight: "700" }}>
+                    {market.name}
+                  </ListItem.Title>
+                </ListItem.Content>
+              </ListItem>
+            ))}
+          </Dialog>
+        </>
+      )}
     </View>
   );
 }

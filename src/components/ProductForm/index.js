@@ -1,14 +1,19 @@
+import { useNavigation } from "@react-navigation/native";
 import { Button, Dialog } from "@rneui/themed";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Text, TextInput } from "react-native";
+import { Alert, Text, TextInput } from "react-native";
+import { createProduct } from "../../api/createProduct";
+import { CategoriesList } from "../CategoriesList";
 
 export function ProductForm({
   id,
-  categories,
   handleToggleProductForm,
   toggleProductForm,
 }) {
+  const [category, setCategory] = useState("");
+  const navigation = useNavigation();
+
   const {
     control,
     handleSubmit,
@@ -21,7 +26,12 @@ export function ProductForm({
   });
 
   const onSubmit = async (marketData) => {
-    console.log(marketData);
+    await createProduct(category, {
+      name: marketData.name,
+      description: marketData.description,
+    });
+    alert("Produto cadastrado com sucesso!");
+    handleToggleProductForm();
   };
 
   return (
@@ -29,6 +39,13 @@ export function ProductForm({
       isVisible={toggleProductForm}
       onBackdropPress={handleToggleProductForm}
     >
+      <Text>Categoria:</Text>
+      <CategoriesList
+        id={id}
+        selectCategory={setCategory}
+        setCategories={() => {}}
+      />
+
       <Text>Nome:</Text>
       <Controller
         control={control}

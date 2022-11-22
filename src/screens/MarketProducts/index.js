@@ -59,7 +59,6 @@ export function MarketProducts({ route }) {
       <ProductForm
         handleToggleProductForm={handleToggleProductForm}
         toggleProductForm={toggleProductForm}
-        categories={categories}
         id={id}
       />
     </View>
