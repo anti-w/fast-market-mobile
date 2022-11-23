@@ -1,3 +1,4 @@
+import { Avatar } from "@rneui/themed";
 import { useEffect, useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity } from "react-native";
 import { getCategories } from "../../api/getCategories";
@@ -23,10 +24,7 @@ export function CategoriesList({
       horizontal
       renderItem={({ item }) => (
         <TouchableOpacity onPress={() => selectCategory(item.id)} key={item.id}>
-          <Image
-            source={{ uri: item.icon }}
-            style={{ width: 50, height: 50 }}
-          />
+          <Avatar rounded source={{ uri: item.icon }} />
           <Text>{item.name}</Text>
         </TouchableOpacity>
       )}

@@ -1,12 +1,13 @@
-import { Avatar, Button, Dialog, ListItem } from "@rneui/themed";
+import { Avatar, Button, ListItem } from "@rneui/themed";
+import { ShoppingCartSimple } from "phosphor-react-native";
 import { useEffect, useState } from "react";
-import { Text, TouchableOpacity, View, FlatList, Image } from "react-native";
+import { Text, View, FlatList } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { getMarkets } from "../../api/getMarkets";
+import { CategoriesList } from "../../components/CategoriesList";
 
-import { Product } from "../../components/Product";
+import { ProductsList as Products } from "../../components/ProductsList";
 import { addProduct } from "../../store/reducers/userProducts";
-import { CATEGORIES, PRODUCTS } from "../../utils/mockData";
 
 export function ProductsList({ navigation }) {
   const userProductsList = useSelector((state) => state.userProducts);
@@ -14,24 +15,29 @@ export function ProductsList({ navigation }) {
 
   const [market, setMarket] = useState([]);
   const [marketId, setMarketId] = useState("");
-  const [selectMarketDialog, setSelectMarketDialog] = useState(false);
+  const [categoryId, setCategoryId] = useState("");
 
-  const handleClickAddProduct = (
+  const handleCategorySelection = (categoryId) => {
+    setCategoryId(categoryId);
+  };
+
+  const navigateToUserProducts = () => {
+    navigation.navigate("userproducts");
+  };
+
+  const addProductToCart = (
     name,
     id,
     categoryOrder,
     categoryName,
     categoryIcon
   ) => {
-    if (userProductsList.find((product) => product.id == id)) return;
+    if (userProductsList.find((product) => product.id == id))
+      return alert("Produto já adicionado!");
 
     dispatch(
       addProduct({ name, id, categoryName, categoryOrder, categoryIcon })
     );
-  };
-
-  const toggleSelectDialog = () => {
-    setSelectMarketDialog(!selectMarketDialog);
   };
 
   useEffect(() => {
@@ -41,56 +47,51 @@ export function ProductsList({ navigation }) {
     })();
   }, []);
 
+  const renderItem = ({ item }) => (
+    <ListItem onPress={() => setMarketId(item.id)}>
+      <Avatar
+        rounded
+        source={{
+          uri: "https://cdn-icons-png.flaticon.com/512/1198/1198310.png",
+        }}
+      />
+      <ListItem.Title>{item.name}</ListItem.Title>
+    </ListItem>
+  );
+
+  const keyExtractor = (key) => key.id;
+
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View
+      style={{
+        flex: 1,
+        marginTop: 40,
+      }}
+    >
       {marketId ? (
         <>
-          <Text>Com algo</Text>
+          <CategoriesList
+            id={marketId}
+            selectCategory={handleCategorySelection}
+            setCategories={() => {}}
+          />
+          <Text>Produtos</Text>
+          <Products
+            categoryId={categoryId}
+            selectProduct={addProductToCart}
+            icon="add"
+          />
         </>
       ) : (
-        <>
-          <Button
-            title={"Selecionar Mercado"}
-            onPress={toggleSelectDialog}
-            buttonStyle={{
-              borderRadius: 6,
-              width: 220,
-              margin: 20,
-            }}
-          />
-          <Dialog
-            isVisible={selectMarketDialog}
-            onBackdropPress={toggleSelectDialog}
-          >
-            <Dialog.Title title="Escolha um mercado" />
-            {market.map((market, idx) => (
-              <ListItem
-                key={market.id}
-                containerStyle={{
-                  marginHorizontal: -10,
-                  borderRadius: 8,
-                }}
-                onPress={() => {
-                  setMarketId(market.id);
-                  toggleSelectDialog();
-                }}
-              >
-                <Avatar
-                  rounded
-                  source={{
-                    uri: "https://cdn-icons-png.flaticon.com/512/862/862819.png",
-                  }}
-                />
-                <ListItem.Content>
-                  <ListItem.Title style={{ fontWeight: "700" }}>
-                    {market.name}
-                  </ListItem.Title>
-                </ListItem.Content>
-              </ListItem>
-            ))}
-          </Dialog>
-        </>
+        <FlatList
+          data={market}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+        />
       )}
+      <Button onPress={navigateToUserProducts}>
+        <ShoppingCartSimple />
+      </Button>
     </View>
   );
 }
