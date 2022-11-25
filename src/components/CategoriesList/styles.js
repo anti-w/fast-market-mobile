@@ -3,6 +3,9 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     marginVertical: 40,
+    padding: 10,
+    backgroundColor: "#03A64A",
+    borderRadius: 10,
   },
 
   title: {

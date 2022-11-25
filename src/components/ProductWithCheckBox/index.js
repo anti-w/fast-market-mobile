@@ -13,7 +13,7 @@ export function ProductWithCheckBox({ id, categoryName, categoryIcon, name }) {
   };
 
   return (
-    <ListItem key={id} bottomDivider>
+    <ListItem key={id}>
       <Avatar title={categoryName} source={{ uri: categoryIcon }} />
       <ListItem.Content>
         <ListItem.Title>{name}</ListItem.Title>
@@ -21,9 +21,7 @@ export function ProductWithCheckBox({ id, categoryName, categoryIcon, name }) {
           center
           title="Pegar"
           checked={check}
-          onPress={() => {
-            removeProductOnCheck(id);
-          }}
+          onPress={() => removeProductOnCheck(id)}
         />
       </ListItem.Content>
     </ListItem>

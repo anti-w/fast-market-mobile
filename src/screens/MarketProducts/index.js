@@ -1,14 +1,16 @@
 import { Avatar, Button, ListItem } from "@rneui/themed";
+import { ArrowLeft } from "phosphor-react-native";
 import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 
 import { CategoriesList } from "../../components/CategoriesList";
 import { CategoryForm } from "../../components/CategoryForm";
+import { Header } from "../../components/Header";
 import { ProductForm } from "../../components/ProductForm";
 import { ProductsList } from "../../components/ProductsList";
 import { styles } from "./styles";
 
-export function MarketProducts({ route }) {
+export function MarketProducts({ route, navigation }) {
   const { name, id } = route.params;
 
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -30,7 +32,38 @@ export function MarketProducts({ route }) {
 
   return (
     <View style={styles.container}>
-      <Text>{name}</Text>
+      <View style={styles.header}>
+        <Button
+          onPress={() => navigation.goBack()}
+          color="#F26241"
+          radius={100}
+          buttonStyle={{ width: 36, height: 36 }}
+          icon={<ArrowLeft weight="bold" />}
+        />
+        <Text style={styles.market}>{name}</Text>
+        <View style={styles.buttonsWrapper}>
+          <Button
+            onPress={() => handleToggleCategoryForm()}
+            title="Nova Categoria"
+            color="#F26241"
+            titleStyle={{ fontSize: 20 }}
+            buttonStyle={{ width: 70, height: 65 }}
+            radius="md"
+            containerStyle={{ margin: 12 }}
+          />
+          <Button
+            onPress={() => handleToggleProductForm()}
+            title="Novo Produto"
+            color="#F26241"
+            titleStyle={{ fontSize: 20 }}
+            buttonStyle={{ width: 70, height: 65 }}
+            radius="md"
+            containerStyle={{ margin: 12 }}
+          />
+        </View>
+      </View>
+      <Text style={styles.label}>Categorias</Text>
+
       <CategoriesList
         id={id}
         selectCategory={selectCategory}
@@ -38,30 +71,13 @@ export function MarketProducts({ route }) {
       />
       <ProductsList categoryId={selectedCategory} />
 
-      <Button
-        onPress={() => handleToggleCategoryForm()}
-        title="Nova Categoria"
-        color="#F26241"
-        titleStyle={{ fontSize: 20 }}
-        buttonStyle={{ width: 170, height: 65 }}
-        radius="md"
-        containerStyle={{ margin: 12 }}
-      />
       <CategoryForm
         handleToggleCategoryForm={handleToggleCategoryForm}
         toggleCategoryForm={toggleCategoryForm}
         categories={categories}
         id={id}
       />
-      <Button
-        onPress={() => handleToggleProductForm()}
-        title="Novo Produto"
-        color="#F26241"
-        titleStyle={{ fontSize: 20 }}
-        buttonStyle={{ width: 170, height: 65 }}
-        radius="md"
-        containerStyle={{ margin: 12 }}
-      />
+
       <ProductForm
         handleToggleProductForm={handleToggleProductForm}
         toggleProductForm={toggleProductForm}

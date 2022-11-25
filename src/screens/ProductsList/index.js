@@ -1,5 +1,5 @@
 import { Avatar, Button, ListItem } from "@rneui/themed";
-import { ShoppingCartSimple } from "phosphor-react-native";
+import { ArrowLeft, ShoppingCartSimple } from "phosphor-react-native";
 import { useEffect, useState } from "react";
 import { Text, View, FlatList } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +8,7 @@ import { CategoriesList } from "../../components/CategoriesList";
 
 import { ProductsList as Products } from "../../components/ProductsList";
 import { addProduct } from "../../store/reducers/userProducts";
+import { styles } from "./styles";
 
 export function ProductsList({ navigation }) {
   const userProductsList = useSelector((state) => state.userProducts);
@@ -61,37 +62,46 @@ export function ProductsList({ navigation }) {
 
   const keyExtractor = (key) => key.id;
 
-  return (
-    <View
-      style={{
-        flex: 1,
-        marginTop: 40,
-      }}
-    >
-      {marketId ? (
-        <>
-          <CategoriesList
-            id={marketId}
-            selectCategory={handleCategorySelection}
-            setCategories={() => {}}
-          />
-          <Text>Produtos</Text>
-          <Products
-            categoryId={categoryId}
-            selectProduct={addProductToCart}
-            icon="add"
-          />
-        </>
-      ) : (
-        <FlatList
-          data={market}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
+  return marketId ? (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Button
+          onPress={() => navigation.goBack()}
+          color="#F26241"
+          radius={100}
+          buttonStyle={{ width: 36, height: 36 }}
+          icon={<ArrowLeft weight="bold" />}
         />
-      )}
-      <Button onPress={navigateToUserProducts}>
-        <ShoppingCartSimple />
-      </Button>
+        <Button
+          onPress={navigateToUserProducts}
+          color="#F26241"
+          title="Cart"
+          buttonStyle={{ width: 70, height: 65 }}
+          radius="lg"
+          icon={<ShoppingCartSimple />}
+        />
+      </View>
+      <Text style={styles.label}>Categorias</Text>
+      <CategoriesList
+        id={marketId}
+        selectCategory={handleCategorySelection}
+        setCategories={() => {}}
+      />
+      <Text style={styles.label}>Produtos</Text>
+      <Products
+        categoryId={categoryId}
+        selectProduct={addProductToCart}
+        icon="add"
+      />
+    </View>
+  ) : (
+    <View style={[styles.container]}>
+      <Text style={styles.label}>Escolha um mercado</Text>
+      <FlatList
+        data={market}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+      />
     </View>
   );
 }

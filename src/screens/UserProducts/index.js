@@ -1,6 +1,7 @@
 import { Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import { CategoryWithProducts } from "../../components/CategoryWithProducts";
+import { styles } from "./styles";
 
 export function UserProducts({ navigation }) {
   const categories = [];
@@ -12,11 +13,15 @@ export function UserProducts({ navigation }) {
   });
 
   return (
-    <View style={{ flex: 1, marginTop: 50 }}>
-      <Text>Você possui X produtos na sua lista</Text>
-      <Text>Faltam corredores para terminar.</Text>
+    <View style={styles.container}>
+      <Text>Você possui {userProducts.length} produtos para pegar</Text>
+      <Text>Faltam {categories.length} corredores para terminar.</Text>
       {categories.map((category, i) => (
-        <CategoryWithProducts categoryName={category} products={userProducts} />
+        <CategoryWithProducts
+          categoryName={category}
+          products={userProducts}
+          key={category + i}
+        />
       ))}
     </View>
   );

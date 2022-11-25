@@ -13,7 +13,6 @@ export function CategoryWithProducts({ categoryName, products }) {
     <ListItem.Accordion
       content={
         <>
-          <Icon name="place" size={30} />
           <ListItem.Content>
             <ListItem.Title>{categoryName}</ListItem.Title>
           </ListItem.Content>

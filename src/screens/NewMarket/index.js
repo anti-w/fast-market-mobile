@@ -6,7 +6,6 @@ import { Text, TextInput, View } from "react-native";
 import { getMarkets } from "../../api/getMarkets";
 import { createMarket as saveMarket } from "../../api/createMarket";
 import { styles } from "./styles";
-import { Storefront, XSquare } from "phosphor-react-native";
 
 export function NewMarket({ navigation }) {
   const [selectMarketDialog, setSelectMarketDialog] = useState(false);

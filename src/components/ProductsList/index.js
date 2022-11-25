@@ -3,6 +3,7 @@ import { Pencil, PencilSimple, PlusCircle } from "phosphor-react-native";
 import { useEffect, useState } from "react";
 import { FlatList } from "react-native";
 import { getProducts } from "../../api/getProducts";
+import { styles } from "./styles";
 
 export function ProductsList({
   categoryId,
@@ -12,28 +13,34 @@ export function ProductsList({
   const [products, setProducts] = useState([]);
 
   const renderItem = ({ item }) => (
-    <ListItem bottomDivider>
-      <Avatar source={{ uri: item.categoryIcon }} />
+    <ListItem
+      bottomDivider
+      style={styles.container}
+      containerStyle={{ backgroundColor: "#4D49BF", borderRadius: 10 }}
+    >
+      <Avatar source={{ uri: item.categoryIcon }} size="medium" />
       <ListItem.Content>
-        <ListItem.Title>{item.name}</ListItem.Title>
-        <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
-        {icon == "add" && (
-          <Button
-            onPress={() =>
-              selectProduct(
-                item.name,
-                item.id,
-                item.categoryOrder,
-                item.categoryName,
-                item.categoryIcon
-              )
-            }
-          >
-            <PlusCircle color="red" />
-          </Button>
-        )}
-        {icon == "edit" && <PencilSimple color="red" />}
+        <ListItem.Title style={styles.title}>{item.name}</ListItem.Title>
+        <ListItem.Subtitle style={styles.subtitle}>
+          {item.description}
+        </ListItem.Subtitle>
       </ListItem.Content>
+      {icon == "add" && (
+        <Button
+          title="Adicionar"
+          radius={10}
+          onPress={() =>
+            selectProduct(
+              item.name,
+              item.id,
+              item.categoryOrder,
+              item.categoryName,
+              item.categoryIcon
+            )
+          }
+        />
+      )}
+      {icon == "edit" && <PencilSimple color="red" />}
     </ListItem>
   );
 
@@ -43,7 +50,6 @@ export function ProductsList({
       if (categoryId) {
         const { data } = await getProducts(categoryId);
         setProducts(data);
-        console.log(data);
       }
     })();
   }, [categoryId]);
