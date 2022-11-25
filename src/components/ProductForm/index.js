@@ -5,6 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Alert, Text, TextInput } from "react-native";
 import { createProduct } from "../../api/createProduct";
 import { CategoriesList } from "../CategoriesList";
+import { styles } from "./styles";
 
 export function ProductForm({
   id,
@@ -39,14 +40,14 @@ export function ProductForm({
       isVisible={toggleProductForm}
       onBackdropPress={handleToggleProductForm}
     >
-      <Text>Categoria:</Text>
+      <Text style={styles.label}>Categoria:</Text>
       <CategoriesList
         id={id}
         selectCategory={setCategory}
         setCategories={() => {}}
       />
 
-      <Text>Nome:</Text>
+      <Text style={styles.label}>Nome:</Text>
       <Controller
         control={control}
         rules={{
@@ -54,13 +55,7 @@ export function ProductForm({
         }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={{
-              backgroundColor: "#FFF",
-              fontSize: 20,
-              height: 80,
-              padding: 10,
-              borderRadius: 4,
-            }}
+            style={styles.input}
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -69,7 +64,7 @@ export function ProductForm({
         name="name"
       />
       {errors.name && <Text>Campo obrigatório.</Text>}
-      <Text>Descrição:</Text>
+      <Text style={styles.label}>Descrição:</Text>
       <Controller
         control={control}
         rules={{
@@ -77,13 +72,7 @@ export function ProductForm({
         }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={{
-              backgroundColor: "#FFF",
-              fontSize: 20,
-              height: 80,
-              padding: 10,
-              borderRadius: 4,
-            }}
+            style={styles.input}
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -93,7 +82,13 @@ export function ProductForm({
       />
       {errors.description && <Text>Campo obrigatório.</Text>}
 
-      <Button title="Cadastrar Produto" onPress={handleSubmit(onSubmit)} />
+      <Button
+        title="Cadastrar"
+        onPress={handleSubmit(onSubmit)}
+        color="#4D49BF"
+        buttonStyle={{ marginTop: 15 }}
+        titleStyle={{ fontWeight: "bold" }}
+      />
     </Dialog>
   );
 }

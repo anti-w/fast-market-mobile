@@ -5,6 +5,8 @@ import { Text, TextInput, View } from "react-native";
 
 import { getMarkets } from "../../api/getMarkets";
 import { createMarket as saveMarket } from "../../api/createMarket";
+import { styles } from "./styles";
+import { Storefront, XSquare } from "phosphor-react-native";
 
 export function NewMarket({ navigation }) {
   const [selectMarketDialog, setSelectMarketDialog] = useState(false);
@@ -47,17 +49,18 @@ export function NewMarket({ navigation }) {
     setCreateMarket(!createMarket);
   };
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View style={styles.container}>
       <Button
         title={"Cadastrar mercado"}
         onPress={toggleCreateDialog}
-        buttonStyle={{
-          borderRadius: 6,
-          width: 220,
-          margin: 20,
-        }}
+        color="#F26241"
+        titleStyle={{ fontSize: 20 }}
+        buttonStyle={{ width: 210, height: 65 }}
+        radius="md"
+        containerStyle={{ margin: 12 }}
       />
       <Dialog isVisible={createMarket} onBackdropPress={toggleCreateDialog}>
+        <Text style={styles.label}>Nome:</Text>
         <Controller
           control={control}
           rules={{
@@ -65,13 +68,7 @@ export function NewMarket({ navigation }) {
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
-              style={{
-                backgroundColor: "#FFF",
-                fontSize: 20,
-                height: 80,
-                padding: 10,
-                borderRadius: 4,
-              }}
+              style={styles.input}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -81,17 +78,25 @@ export function NewMarket({ navigation }) {
         />
         {errors.name && <Text>Campo obrigatório.</Text>}
 
-        <Button title="Cadastrar Mercado" onPress={handleSubmit(onSubmit)} />
+        <Button
+          title="Cadastrar"
+          color="#4D49BF"
+          buttonStyle={{
+            padding: 13,
+          }}
+          radius="md"
+          onPress={handleSubmit(onSubmit)}
+        />
       </Dialog>
 
       <Button
         title={"Selecionar Mercado"}
         onPress={toggleSelectDialog}
-        buttonStyle={{
-          borderRadius: 6,
-          width: 220,
-          margin: 20,
-        }}
+        color="#F26241"
+        titleStyle={{ fontSize: 20 }}
+        buttonStyle={{ width: 210, height: 65 }}
+        radius="md"
+        containerStyle={{ margin: 12 }}
       />
       <Dialog
         isVisible={selectMarketDialog}

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Text, TextInput } from "react-native";
 import { createCategory } from "../../api/createCategory";
+import { styles } from "./styles";
 
 export function CategoryForm({
   id,
@@ -35,8 +36,9 @@ export function CategoryForm({
     <Dialog
       isVisible={toggleCategoryForm}
       onBackdropPress={handleToggleCategoryForm}
+      overlayStyle={{ padding: 20, paddingVertical: 30, borderRadius: 10 }}
     >
-      <Text>Nome do corredor:</Text>
+      <Text style={styles.label}>Nome:</Text>
       <Controller
         control={control}
         rules={{
@@ -44,13 +46,7 @@ export function CategoryForm({
         }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={{
-              backgroundColor: "#FFF",
-              fontSize: 20,
-              height: 80,
-              padding: 10,
-              borderRadius: 4,
-            }}
+            style={styles.input}
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -59,7 +55,7 @@ export function CategoryForm({
         name="name"
       />
       {errors.name && <Text>Campo obrigatório.</Text>}
-      <Text>Ordem:</Text>
+      <Text style={styles.label}>Ordem:</Text>
       <Controller
         control={control}
         rules={{
@@ -68,13 +64,7 @@ export function CategoryForm({
         }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={{
-              backgroundColor: "#FFF",
-              fontSize: 20,
-              height: 80,
-              padding: 10,
-              borderRadius: 4,
-            }}
+            style={styles.input}
             keyboardType="numeric"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -85,7 +75,7 @@ export function CategoryForm({
       />
       {errors.order && <Text>Campo obrigatório.</Text>}
 
-      <Text>Url avatar:</Text>
+      <Text style={styles.label}>Ícone:</Text>
       <Controller
         control={control}
         rules={{
@@ -93,13 +83,7 @@ export function CategoryForm({
         }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={{
-              backgroundColor: "#FFF",
-              fontSize: 20,
-              height: 80,
-              padding: 10,
-              borderRadius: 4,
-            }}
+            style={styles.input}
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -109,7 +93,13 @@ export function CategoryForm({
       />
       {errors.icon && <Text>Campo obrigatório.</Text>}
 
-      <Button title="Cadastrar Corredor" onPress={handleSubmit(onSubmit)} />
+      <Button
+        title="Cadastrar"
+        onPress={handleSubmit(onSubmit)}
+        color="#4D49BF"
+        buttonStyle={{ marginTop: 15 }}
+        titleStyle={{ fontWeight: "bold" }}
+      />
     </Dialog>
   );
 }

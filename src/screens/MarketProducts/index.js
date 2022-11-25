@@ -6,6 +6,7 @@ import { CategoriesList } from "../../components/CategoriesList";
 import { CategoryForm } from "../../components/CategoryForm";
 import { ProductForm } from "../../components/ProductForm";
 import { ProductsList } from "../../components/ProductsList";
+import { styles } from "./styles";
 
 export function MarketProducts({ route }) {
   const { name, id } = route.params;
@@ -28,12 +29,7 @@ export function MarketProducts({ route }) {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        marginTop: 40,
-      }}
-    >
+    <View style={styles.container}>
       <Text>{name}</Text>
       <CategoriesList
         id={id}
@@ -44,7 +40,12 @@ export function MarketProducts({ route }) {
 
       <Button
         onPress={() => handleToggleCategoryForm()}
-        title="Cadastrar categoria"
+        title="Nova Categoria"
+        color="#F26241"
+        titleStyle={{ fontSize: 20 }}
+        buttonStyle={{ width: 170, height: 65 }}
+        radius="md"
+        containerStyle={{ margin: 12 }}
       />
       <CategoryForm
         handleToggleCategoryForm={handleToggleCategoryForm}
@@ -54,7 +55,12 @@ export function MarketProducts({ route }) {
       />
       <Button
         onPress={() => handleToggleProductForm()}
-        title="Cadastrar Produto"
+        title="Novo Produto"
+        color="#F26241"
+        titleStyle={{ fontSize: 20 }}
+        buttonStyle={{ width: 170, height: 65 }}
+        radius="md"
+        containerStyle={{ margin: 12 }}
       />
       <ProductForm
         handleToggleProductForm={handleToggleProductForm}

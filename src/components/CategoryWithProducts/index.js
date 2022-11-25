@@ -2,8 +2,12 @@ import { Icon, ListItem } from "@rneui/themed";
 import { useState } from "react";
 import { ProductWithCheckBox } from "../ProductWithCheckBox";
 
-export function CategoryWithProducts({ categoryName, userProducts }) {
+export function CategoryWithProducts({ categoryName, products }) {
   const [expanded, setExpanded] = useState(false);
+
+  const filterProductsByCategory = products.filter(
+    (product) => product.categoryName == categoryName
+  );
 
   return (
     <ListItem.Accordion
@@ -20,7 +24,7 @@ export function CategoryWithProducts({ categoryName, userProducts }) {
         setExpanded(!expanded);
       }}
     >
-      {userProducts.map((product) => (
+      {filterProductsByCategory.map((product) => (
         <ProductWithCheckBox
           categoryIcon={product.categoryIcon}
           categoryName={product.categoryName}
